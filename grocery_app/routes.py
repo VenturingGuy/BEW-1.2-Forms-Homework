@@ -34,9 +34,8 @@ def new_store():
         )
         db.session.add(new_store)
         db.session.commit()
-
         flash('New store was created successfully.')
-        return redirect(url_for('main.store_detail'))
+        return redirect(url_for('main.store_detail', store_id=new_store.id))
     # TODO: Send the form to the template and use it to render the form fields
     return render_template('new_store.html', form=form)
 
@@ -60,7 +59,7 @@ def new_item():
         db.session.commit()
 
         flash('New item was created successfully.')
-        return redirect(url_for('main.item_detail'))
+        return redirect(url_for('main.item_detail', item_id = new_item.id))
     # TODO: Send the form to the template and use it to render the form fields
     return render_template('new_item.html', form=form)
 
@@ -76,11 +75,11 @@ def store_detail(store_id):
     if form.validate_on_submit():
         store.title=form.title.data,
         store.address=form.address.data
-        db.session.add(new_store)
+        db.session.add(store)
         db.session.commit()
         flash('Store has been successfully updated.')
         store = GroceryStore.query.get(store_id)
-        return redirect(url_for('main.store_detail'))
+        return redirect(url_for('main.store_detail', store_id = store_id))
     # TODO: Send the form to the template and use it to render the form fields
     return render_template('store_detail.html', store=store, form=form)
 
@@ -88,7 +87,7 @@ def store_detail(store_id):
 def item_detail(item_id):
     item = GroceryItem.query.get(item_id)
     # TODO: Create a GroceryItemForm and pass in `obj=item`
-    item = GroceryItemForm.query.get(item_id)
+    form = GroceryItemForm(obj=item)
     # TODO: If form was submitted and was valid:
     # - update the GroceryItem object and save it to the database,
     # - flash a success message, and
@@ -99,10 +98,10 @@ def item_detail(item_id):
         item.category=form.category.data,
         item.photo_url=form.photo_url.data,
         item.store=form.store.data
-        db.session.add(new_item)
+        db.session.add(item)
         db.session.commit()
         flash('Item has been successfully updated.')
-        return redirect(url_for('main.item_detail'))
+        return redirect(url_for('main.item_detail', item_id = item_id))
     # TODO: Send the form to the template and use it to render the form fields
     return render_template('item_detail.html', item=item, form=form)
 
