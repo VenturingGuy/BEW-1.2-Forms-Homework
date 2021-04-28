@@ -32,9 +32,8 @@ class GroceryItem(db.Model):
     price = db.Column(db.Float(precision=2), nullable=False)
     category = db.Column(db.Enum(ItemCategory), default=ItemCategory.OTHER)
     photo_url = db.Column(URLType)
-    store_id = db.Column(
-        db.Integer, db.ForeignKey('grocery_store.id'), nullable=False)
-    store = db.relationship('GroceryStore', back_populates='items')
+    store = db.relationship('GroceryStore', back_populates='items')    
+    store_id = db.Column(db.Integer, db.ForeignKey('grocery_store.id'), nullable=False)
 
     def __str__(self):
         return f"<Item: {self.name}>"
